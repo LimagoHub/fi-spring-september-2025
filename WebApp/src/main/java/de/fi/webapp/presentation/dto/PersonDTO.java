@@ -1,4 +1,4 @@
-package de.fi.webapp.presentation;
+package de.fi.webapp.presentation.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
