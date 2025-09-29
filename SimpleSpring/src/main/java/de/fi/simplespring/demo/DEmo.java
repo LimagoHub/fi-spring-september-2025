@@ -3,6 +3,8 @@ package de.fi.simplespring.demo;
 
 import de.fi.simplespring.translator.Translator;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import jakarta.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +12,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component
+@Named
 @Scope("singleton") // Default
 @Lazy(false)
 
@@ -34,5 +36,10 @@ public class DEmo {
     @PostConstruct
     public void play() {
         System.out.println(translator.translate(gruss));
+    }
+
+    @PreDestroy // Nur bei singletons !!!!!!!!
+    public void dispose() {
+        System.out.println("und tschuess...");
     }
 }
