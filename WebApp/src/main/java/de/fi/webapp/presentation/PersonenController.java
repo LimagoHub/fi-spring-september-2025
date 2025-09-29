@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,9 +46,12 @@ public class PersonenController {
     }
 
     @GetMapping(path = "", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Iterable<PersonDTO>> findAll() {
+    public ResponseEntity<Iterable<PersonDTO>> findAll(
+            @RequestParam(required = false, defaultValue = "Fritz") String vorname,
+            @RequestParam(required = false, defaultValue = "Schmitt")String nachname
+    ) {
 
-
+        System.out.printf("Vorname = %s und Nachname, %s\n", vorname, nachname);
         var liste = List.of(
                 new PersonDTO(UUID.randomUUID(), "Max","Mustermann") ,
                 new PersonDTO(UUID.randomUUID(), "Erika","Mustermann"),
@@ -70,8 +74,8 @@ public class PersonenController {
     }
 
 
-    @PostMapping(path="")
-    public ResponseEntity<Void> saveCustomer(@RequestBody PersonDTO personDTO, UriComponentsBuilder uriBuilder) {
+    @PostMapping(path="", consumes =  MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> saveCustomer(@RequestBody @Valid PersonDTO personDTO, UriComponentsBuilder uriBuilder) {
 
         System.out.println(personDTO.toString() + " wurde erfasst");
         UriComponents uriComponents = uriBuilder.path("/v1/personen/{id}").buildAndExpand(personDTO.getId());
@@ -79,8 +83,8 @@ public class PersonenController {
 
     }
 
-    @PutMapping(path="/{id}")
-    public ResponseEntity<Void> updateCustomer(@PathVariable UUID id, @RequestBody PersonDTO personDTO) {
+    @PutMapping(path="/{id}",consumes =  MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updateCustomer(@PathVariable UUID id, @Valid @RequestBody PersonDTO personDTO) {
 
         System.out.println(personDTO.toString() + " wurde geaendert");
 

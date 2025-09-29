@@ -1,5 +1,6 @@
 package de.fi.webapp.presentation.dto;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -12,15 +13,17 @@ public class PersonDTO {
     @NotNull
     private UUID id;
     @NotNull
+    @NotEmpty
     @Size(min=2, max=20)
     private String vorname;
     @NotNull
+    @NotEmpty
     @Size(min=2, max=20)
     private String nachname;
 
 
     public PersonDTO() {
-        this(UUID.randomUUID(), "John", "Doe");
+
     }
 
     public PersonDTO(final UUID id, final String vorname, final String nachname) {
