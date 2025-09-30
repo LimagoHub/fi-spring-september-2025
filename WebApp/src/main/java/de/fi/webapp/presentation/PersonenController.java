@@ -11,6 +11,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -20,7 +22,9 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/personen")
+@RequestScope
 public class PersonenController {
+
 
     @Operation(summary = "Liefert eine Person")
     @ApiResponses(value = {
