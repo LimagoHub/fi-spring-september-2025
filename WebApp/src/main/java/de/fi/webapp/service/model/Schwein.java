@@ -9,9 +9,7 @@ public class Schwein {
     private String name;
     private int gewicht;
 
-    public Schwein() {
 
-    }
 
     public Schwein(final UUID id, final String name, final int gewicht) {
         this.id = id;
@@ -23,7 +21,7 @@ public class Schwein {
         return id;
     }
 
-    public void setId(final UUID id) {
+    private void setId(final UUID id) {
         this.id = id;
     }
 
@@ -31,7 +29,7 @@ public class Schwein {
         return name;
     }
 
-    public void setName(final String name) {
+    private void setName(final String name) {
         this.name = name;
     }
 
@@ -39,7 +37,7 @@ public class Schwein {
         return gewicht;
     }
 
-    public void setGewicht(final int gewicht) {
+    private void setGewicht(final int gewicht) {
         this.gewicht = gewicht;
     }
 

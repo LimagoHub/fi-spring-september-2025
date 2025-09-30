@@ -1,7 +1,7 @@
-package de.fi.webapp.presentation;
+package de.fi.webapp.presentation.v1;
 
 
-import de.fi.webapp.persistence.PersonenRepository;
+import de.fi.webapp.presentation.PersonDTOMapper;
 import de.fi.webapp.presentation.dto.PersonDTO;
 import de.fi.webapp.service.PersonService;
 import de.fi.webapp.service.PersonenServiceException;
@@ -13,15 +13,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.RequestScope;
-import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
