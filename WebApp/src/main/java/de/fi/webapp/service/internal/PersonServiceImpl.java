@@ -1,43 +1,48 @@
 package de.fi.webapp.service.internal;
 
 import de.fi.webapp.persistence.PersonenRepository;
+import de.fi.webapp.service.BlacklistService;
 import de.fi.webapp.service.PersonService;
 import de.fi.webapp.service.PersonenServiceException;
 import de.fi.webapp.service.model.Person;
 import de.fi.webapp.service.model.mapper.PersonMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
+//@Service
 @Transactional(rollbackFor = PersonenServiceException.class,isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 public class PersonServiceImpl implements PersonService {
 
 
     private final PersonenRepository repository;
     private final PersonMapper mapper;
+    private final List<String> antipathen;
 
-    public PersonServiceImpl(final PersonenRepository repository, final PersonMapper mapper) {
+    public PersonServiceImpl(final PersonenRepository repository, final PersonMapper mapper, @Qualifier("antipathen") final List<String> antipathen) {
         this.repository = repository;
         this.mapper = mapper;
+        this.antipathen = antipathen;
     }
 
     /*
-        person == null -> PSE
-        vorname == null oder zu kurz ->PSE
-        nachname dito
+                person == null -> PSE
+                vorname == null oder zu kurz ->PSE
+                nachname dito
 
-        Attila -> PSE
+                Attila -> PSE
 
-        exception in underlying service ->PSE
+                exception in underlying service ->PSE
 
-        happy day -> Person to Repo
+                happy day -> Person to Repo
 
-     */
+             */
     @Override
     public void speichern(Person person) throws PersonenServiceException {
         try {
@@ -50,7 +55,7 @@ public class PersonServiceImpl implements PersonService {
             if(person.getNachname() == null || person.getNachname().length() <2)
                 throw new PersonenServiceException("Namename zu kurz!");
 
-            if(person.getVorname().equalsIgnoreCase("Attila"))
+            if(antipathen.contains(person.getVorname()))
                 throw new PersonenServiceException("Unerwuenschte Person");
 
             repository.save(mapper.convert(person));
