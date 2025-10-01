@@ -8,6 +8,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.logging.Logger;
 
 
@@ -15,16 +17,21 @@ import java.util.logging.Logger;
 @Component
 public class LoggerAspect {
 
-    private Logger logger = Logger.getLogger(LoggerAspect.class.getName());
+    private static Logger logger = Logger.getLogger(LoggerAspect.class.getName());
 
-    @Before("execution(public * de.fi.webapp.presentation.v1.PersonenController.*(..))")
+
+    @Pointcut("execution(public * de.fi.webapp.presentation.v1.PersonenController.*(..))")
+    public void personenQueryControllerMethods(){}
+
+
+    @Before("Pointcuts.personenQueryControllerMethods()")
     public void before(final JoinPoint joinPoint) {
         logger.warning( String.format(
                 "##################### Methode  %s wurde aufgerufen ########################"
                 , joinPoint.getSignature().getName()));
     }
 
-    @AfterReturning(value = "execution(public * de.fi.webapp.presentation.v1.PersonenController.*(..))", returning = "result")
+    @AfterReturning(value = "Pointcuts.personenQueryControllerMethods()", returning = "result")
     public void logAdviceAfterReturning(final JoinPoint joinPoint, Object result) {
 
         logger.warning(String.format("############################# Afterreturning: %s ######################", joinPoint.getSignature().getName()));
@@ -38,9 +45,15 @@ public class LoggerAspect {
         logger.warning(String.format("############################# Exception: %s ######################", ex.toString()));
     }
 
-    @Around(value="execution(public * de.fi.webapp.presentation.v1.PersonenController.*(..))")
+    @Around(value="de.fi.webapp.aspects.Pointcuts.dozentMethods()")
     public Object around(final ProceedingJoinPoint joinPoint) throws Throwable {
-        return joinPoint.proceed();
+
+        Instant start = Instant.now();
+        var result = joinPoint.proceed();
+        Instant end = Instant.now();
+        logger.warning(String.format("Duration = %s ms" , Duration.between(start, end).toMillis() ));
+
+        return result;
     }
 
 }

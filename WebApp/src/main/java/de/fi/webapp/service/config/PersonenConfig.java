@@ -27,7 +27,7 @@ public class PersonenConfig {
         return List.of("Banana", "Cherry", "Strawberry", "Raspberry");
     }
 
-    @Bean
+    //@Bean
     public PersonService createPersonService(final PersonenRepository repo, final PersonMapper mapper,@Qualifier("antipathen") final List<String> antipathen) {
         return new PersonServiceImpl(repo, mapper, antipathen);
     }

@@ -1,5 +1,6 @@
 package de.fi.webapp.service.internal;
 
+import de.fi.webapp.aspects.Dozent;
 import de.fi.webapp.persistence.PersonenRepository;
 import de.fi.webapp.service.BlacklistService;
 import de.fi.webapp.service.PersonService;
@@ -16,7 +17,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-//@Service
+
+@Dozent
+@Service
 @Transactional(rollbackFor = PersonenServiceException.class,isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 public class PersonServiceImpl implements PersonService {
 
