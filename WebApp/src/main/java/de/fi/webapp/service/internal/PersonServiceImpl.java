@@ -51,7 +51,7 @@ public class PersonServiceImpl implements PersonService {
                 throw new PersonenServiceException("Namename zu kurz!");
 
             if(person.getVorname().equalsIgnoreCase("Attila"))
-                throw new PersonenServiceException("Antipath!");
+                throw new PersonenServiceException("Unerwuenschte Person");
 
             repository.save(mapper.convert(person));
         } catch (RuntimeException e) {
